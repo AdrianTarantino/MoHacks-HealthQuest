@@ -11,6 +11,12 @@ class Player(GameObject):
         self.screenWidth = screenWidth
         self.screenHeight = screenHeight
 
+        self.velocity = 5
+        self.Left = False
+        self.Right = False
+        self.Up = False
+        self.Down = False 
+
         self.rect.x = (screenWidth / 2) - (width / 2)
         self.rect.y = (screenHeight / 2) - (height / 2)
 
@@ -22,16 +28,24 @@ class Player(GameObject):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_a]:
             self.rect.x -= self.velocity
+            self.Left = True
+            self.Right = False
             self.direction = 'l'
         if keys[pygame.K_d]:
             self.rect.x += self.velocity
             self.direction = 'r'
+            self.Right = True
+            self.Left = False
         if keys[pygame.K_w]:
             self.rect.y -= self.velocity
             self.direction = 'u'
+            self.Up = True
+            self.Down = False
         if keys[pygame.K_s]:
             self.rect.y += self.velocity
             self.direction = 'd'
+            self.Up = False
+            self.Down = True
 
     def shoot(self, screen):
         keys = pygame.key.get_pressed()
