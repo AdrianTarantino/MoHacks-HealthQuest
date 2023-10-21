@@ -12,6 +12,7 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 clock = pygame.time.Clock()
 running = True
 pauseState = ''
+BossAlive = True
 gameState = "start"
 startButton = [290, 510, 420, 120]
 helpButton = [10, 10, 120, 120]
@@ -35,7 +36,11 @@ CamY = player.rect.y
 
 testLevelImage = "MapMaterials\Spawn.png"
 testLevel = pygame.image.load(testLevelImage)
-hallway = pygame.image.load("MapMaterials\VerticlePath.png")
+hallwaySplit = pygame.image.load("MapMaterials\VerticleSplitPath.png")
+Cluster = pygame.image.load("MapMaterials\Exam Room Cluster.png")
+PathWBranch = pygame.image.load("MapMaterials\PathWithBranch.png")
+triage = pygame.image.load("MapMaterials\Triage Area.png")
+BossRoom = pygame.image.load("MapMaterials\BossRoom.png")
 
 while running:
     ev = pygame.event.poll()
@@ -108,7 +113,7 @@ while running:
             if player.rect.y > 15 and player.rect.y < 46:
                 gameState = 'Hallway'
                 print("joke that went to0 far")
-
+                player.rect.x, player.rect.y = (330, 450)
 
         # fill the screen with a color to wipe away anything from last frame
         # screen.fill("purple")
@@ -124,11 +129,87 @@ while running:
             if ev.key == pygame.K_ESCAPE:
                     gameState = 'pause'
                     pauseState = "Hallway"
+        
+        if player.rect.y <= 0 and gameState == "Hallway":
+            gameState = 'ExamRoomcluster'
+            player.rect.x, player.rect.y = (400, 500)
+        
+        if player.rect.x >= 600 and gameState == "Hallway":
+            gameState = 'Path'
+            player.rect.x, player.rect.y = (100, 200)
+        
+        if player.rect.y >= 600 and gameState == "Hallway":
+            gameState = "gaming"
+            player.rect.x, player.rect.y = (350, 45)
 
-
+                
+        
         screen.fill("black")        
-        screen.blit(hallway, ((WIDTH/2 + 100) - (testLevel.get_width() / 2), (HEIGHT/2 -100) - (testLevel.get_height() / 2)))
+        screen.blit(hallwaySplit, ((WIDTH/2 + 100) - (testLevel.get_width() / 2), (HEIGHT/2 -100) - (testLevel.get_height() / 2)))
         player.draw(screen)
+    
+    elif gameState == "ExamRoomcluster":
+        if ev.type == pygame.KEYDOWN:
+            if ev.key == pygame.K_ESCAPE:
+                    gameState = 'pause'
+                    pauseState = "ExamRoomcluster"
+
+        if player.rect.y >= 600:
+            gameState = "Hallway"
+            player.rect.x, player.rect.y = (400, 100)
+
+
+        screen.blit(Cluster, (0,0))
+        player.draw(screen)
+    
+    elif gameState == "Path":
+        if ev.type == pygame.KEYDOWN:
+            if ev.key == pygame.K_ESCAPE:
+                    gameState = 'pause'
+                    pauseState = "Path"
+
+        if player.rect.x <= 0:
+            gameState = "Hallway"
+            player.rect.x, player.rect.y = (500, 200)
+
+        if player.rect.y >= 550 and gameState == "Path":
+            gameState = "Triage"
+            player.rect.x, player.rect.y = (400,50)
+        
+        if player.rect.x >= 750:
+            gameState = "Boss"
+
+
+        screen.blit(PathWBranch, (0,0))
+        player.draw(screen)
+
+    elif gameState == "Triage":
+        if ev.type == pygame.KEYDOWN:
+            if ev.key == pygame.K_ESCAPE:
+                    gameState = 'pause'
+                    pauseState = "Triage"
+
+        if player.rect.x > 330 and player.rect.x < 462 and player.rect.y < 30 and player.rect.y > 16:
+            gameState = "Path"
+            player.rect.x, player.rect.y = (400,500)
+
+        screen.blit(triage, (0,0))
+        player.draw(screen)
+
+    elif gameState == "Boss":
+        if ev.type == pygame.KEYDOWN:
+            if ev.key == pygame.K_ESCAPE:
+                    gameState = 'pause'
+                    pauseState = "Boss"
+
+        if BossAlive == False and player.rect.x <= 0:
+            gameState = "Path"
+            player.rect.x, player.rect.y = (400,500)
+
+        screen.blit(BossRoom, (0,0))
+        player.draw(screen)
+    
+    
 
 
     elif gameState == "pause":
