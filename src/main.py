@@ -3,6 +3,7 @@ import pygame
 from Game_Objects.Player import Player
 from Game_Objects.Level import Level
 from Game_Objects.Virus import Virus
+from Game_Objects.BossVirus import BossVirus
 
 WIDTH = 800
 HEIGHT = 600
@@ -36,6 +37,7 @@ fontRenders = {"titleFont1" : arialFont.render("HEALTHCARE", 1, "white"),
                "backFont" : backFont.render("BACK", 1, "white"),
                "youDied" : arialFont.render("YOU DIED", 1, "red")}
 
+bossVirus = BossVirus(2, 500, WIDTH, HEIGHT)
 player = Player(7, WIDTH, HEIGHT, 1, {'d' : 1, 'u' : 1, 'r' : 1, 'l' : 1}, 1)
 
 viruses = pygame.sprite.Group()
@@ -275,11 +277,23 @@ while running:
                     gameState = 'pause'
                     pauseState = "Boss"
 
+        if bossVirus.health <= 0 and player.rect.x <= 0:
+            gameState = "Path"
+            player.rect.x, player.rect.y = (400,500)
+
+        if pygame.Rect.colliderect(player.rect, bossVirus.rect):
+            gameState = "end"
         screen.blit(BossRoom, (0,0))
-            player.draw(screen, viruses)
+
+        print(bossVirus.health)
+        if bossVirus.health > 0:
+            bossVirus.draw(screen, player)
+
+        player.draw(screen, viruses)
+        screen.blit(BossRoom, (0,0))
         scoreFont = backFont.render(f"SCORE: {player.score}", 1, "#ffc800")
         screen.blit(scoreFont, (5, 5))
-    
+        
     elif gameState == "pause":
         screen.fill("red")
 
