@@ -9,6 +9,10 @@ HEIGHT = 600
 
 # pygame setup
 pygame.init()
+pygame.mixer.init()
+pygame.mixer.music.load("Assets\\music\\backgroundSong.mp3") 
+pygame.mixer.music.play(-1,0.0)
+
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 clock = pygame.time.Clock()
 running = True
@@ -246,6 +250,7 @@ while running:
             virus.reset()
 
     # flip() the display to put your work on screen
+
     pygame.display.flip()
 
     clock.tick(60)  # limits FPS to 60
