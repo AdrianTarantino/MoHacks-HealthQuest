@@ -18,8 +18,8 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 clock = pygame.time.Clock()
 running = True
 pauseState = ''
-BossAlive = True
 gameState = "start"
+score = 0
 startButton = [WIDTH * 290/1000, HEIGHT * 7/10, WIDTH * 420/1000, HEIGHT * 140/1000]
 helpButton = [10, 10, 70, 70]
 backButton = [10, 540, 180, 50]
@@ -34,15 +34,20 @@ fontRenders = {"titleFont1" : arialFont.render("HEALTHCARE", 1, "white"),
                "pauseFont2" : arialFont.render("SCREEN", 1, "white"),
                "startFont" : arialFont.render("START", 1, "white"),
                "helpFont" : helpFont.render("?", 1, "white"),
-               "backFont" : backFont.render("BACK", 1, "white")}
+               "backFont" : backFont.render("BACK", 1, "white"),
+               "youDied" : arialFont.render("YOU DIED", 1, "red")}
 
 bossVirus = BossVirus(2, 500, WIDTH, HEIGHT)
 player = Player(7, WIDTH, HEIGHT, 1, {'d' : 1, 'u' : 1, 'r' : 1, 'l' : 1}, 1)
+
 viruses = pygame.sprite.Group()
 viruses.add(Virus(8, WIDTH, HEIGHT),
             Virus(8, WIDTH, HEIGHT),
             Virus(8, WIDTH, HEIGHT),
             Virus(8, WIDTH, HEIGHT))
+
+scoreFont = backFont.render(f"SCORE: {player.score}", 1, "#ffc800")
+highscoreFont = backFont.render(f"HIGHSCORE: {player.highscore[0]}", 1, "red")
 
 CamX = player.rect.x
 CamY = player.rect.y
@@ -69,8 +74,17 @@ while running:
     mousePos = pygame.mouse.get_pos()
     mouseRect = pygame.Rect(mousePos[0], mousePos[1], 1, 1)
 
-    if gameState == "start":
+    if player.rect.x > WIDTH - 40:
+        player.rect.x -= player.velocity
+    elif player.rect.x < -10:
+        player.rect.x += player.velocity
+    elif player.rect.y > HEIGHT - 40:
+        player.rect.y -= player.velocity
+    elif player.rect.y < 0:
+        player.rect.y += player.velocity
 
+    if gameState == "start":
+        highscoreFont = backFont.render(f"HIGHSCORE: {player.highscore[0]}", 1, "red")
         if mouseRect.colliderect(startButton):
             # highlights the button as the mouse is hovering it
             reddish = "#bd0000"
@@ -97,6 +111,7 @@ while running:
         screen.blit(fontRenders['startFont'], (startButton[0] + WIDTH * 1/100, startButton[1] - 10))
         screen.blit(fontRenders['titleFont1'], (WIDTH * 1/10, HEIGHT * 150/1000))
         screen.blit(fontRenders['titleFont2'], (WIDTH * 2/10 + WIDTH * 45/800, HEIGHT * 300/1000))
+        screen.blit(highscoreFont, (startButton[0] + WIDTH/100, startButton[1] + 100))
 
     elif gameState == "help":
         orangish = '#ffb300'
@@ -122,7 +137,7 @@ while running:
                 pauseState = "gaming"
 
         if player.rect.x > 350 and player.rect.x < 522:
-            if player.rect.y > 15 and player.rect.y < 46:
+            if player.rect.y > 0 and player.rect.y < 46:
                 gameState = 'Hallway'
                 print("joke that went too far")
                 player.rect.x, player.rect.y = (330, 450)
@@ -136,11 +151,13 @@ while running:
         player.draw(screen, viruses)
         if player.isInfected(viruses):
             print("dead")
+            screen.blit(fontRenders['youDied'], (WIDTH/5, WIDTH/2))
             gameState = "end"
 
         viruses.draw(screen)
         viruses.update(screen)
-
+        scoreFont = backFont.render(f"SCORE: {player.score}", 1, "#ffc800")
+        screen.blit(scoreFont, (5, 5))
 
     elif gameState == "Hallway":
         if ev.type == pygame.KEYDOWN:
@@ -156,29 +173,47 @@ while running:
             gameState = 'Path'
             player.rect.x, player.rect.y = (100, 200)
         
-        if player.rect.y >= 600 and gameState == "Hallway":
+        if player.rect.y >= HEIGHT - 100 and gameState == "Hallway":
             gameState = "gaming"
             player.rect.x, player.rect.y = (350, 45)
 
-                
-        
+        if player.rect.colliderect(0, 0, 245, 600):
+            player.rect.x += player.velocity
+        elif player.rect.colliderect(510, 405, 320, 10):
+            player.rect.y -= player.velocity
+        elif player.rect.colliderect(500, 405, 10, 395):
+            player.rect.x -= player.velocity
+        elif player.rect.colliderect(530, 190, 330, 10):
+            player.rect.y += player.velocity
+        elif player.rect.colliderect(500, 0, 10, 200):
+            player.rect.x -= player.velocity
+
         screen.fill("black")        
         screen.blit(hallwaySplit, ((WIDTH/2 + 100) - (testLevel.get_width() / 2), (HEIGHT/2 -100) - (testLevel.get_height() / 2)))
         player.draw(screen, viruses)
+        scoreFont = backFont.render(f"SCORE: {player.score}", 1, "#ffc800")
+        screen.blit(scoreFont, (5, 5))
     
     elif gameState == "ExamRoomcluster":
         if ev.type == pygame.KEYDOWN:
             if ev.key == pygame.K_ESCAPE:
                     gameState = 'pause'
                     pauseState = "ExamRoomcluster"
+        if player.isInfected(viruses):
+            print("dead")
+            gameState = "end"
+    
 
-        if player.rect.y >= 600:
+        if player.rect.y >= HEIGHT - 100:
             gameState = "Hallway"
             player.rect.x, player.rect.y = (400, 100)
 
-
         screen.blit(Cluster, (0,0))
         player.draw(screen, viruses)
+        viruses.draw(screen)
+        viruses.update(screen)
+        scoreFont = backFont.render(f"SCORE: {player.score}", 1, "#ffc800")
+        screen.blit(scoreFont, (5, 5))
     
     elif gameState == "Path":
         if ev.type == pygame.KEYDOWN:
@@ -198,10 +233,21 @@ while running:
             gameState = "Boss"
             player.rect.x, player.rect.y = (50,300)
 
-
+        if player.rect.colliderect(0, 0, 800, 150):
+            player.rect.y += player.velocity
+        elif player.rect.colliderect(0, 380, 250, 10):
+            player.rect.y -= player.velocity
+        elif player.rect.colliderect(250, 380, 10, 420):
+            player.rect.x += player.velocity
+        elif player.rect.colliderect(540, 400, 10, 420):
+            player.rect.x -= player.velocity
+        elif player.rect.colliderect(540, 380, 230, 10):
+            player.rect.y -= player.velocity
 
         screen.blit(PathWBranch, (0,0))
         player.draw(screen, viruses)
+        scoreFont = backFont.render(f"SCORE: {player.score}", 1, "#ffc800")
+        screen.blit(scoreFont, (5, 5))
 
     elif gameState == "Triage":
         if ev.type == pygame.KEYDOWN:
@@ -209,12 +255,21 @@ while running:
                     gameState = 'pause'
                     pauseState = "Triage"
 
-        if player.rect.x > 330 and player.rect.x < 462 and player.rect.y < 30 and player.rect.y > 16:
+        if player.rect.x > 260 and player.rect.x < 462 and player.rect.y < 30 and player.rect.y > -10:
             gameState = "Path"
             player.rect.x, player.rect.y = (400,500)
 
+        if player.isInfected(viruses):
+            print("dead")
+            gameState = "end"
+
         screen.blit(triage, (0,0))
         player.draw(screen, viruses)
+
+        viruses.draw(screen)
+        viruses.update(screen)
+        scoreFont = backFont.render(f"SCORE: {player.score}", 1, "#ffc800")
+        screen.blit(scoreFont, (5, 5))
 
     elif gameState == "Boss":
         if ev.type == pygame.KEYDOWN:
@@ -235,7 +290,10 @@ while running:
             bossVirus.draw(screen, player)
 
         player.draw(screen, viruses)
-
+        screen.blit(BossRoom, (0,0))
+        scoreFont = backFont.render(f"SCORE: {player.score}", 1, "#ffc800")
+        screen.blit(scoreFont, (5, 5))
+        
     elif gameState == "pause":
         screen.fill("red")
 

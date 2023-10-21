@@ -25,6 +25,11 @@ class Player(GameObject):
         self.bullets = pygame.sprite.Group()
         self.direction = 'u'
         self.shootKeyPressed = False
+        self.score = 0
+
+        file = open('highscore.txt', 'r')
+        self.highscore = file.readlines()
+        file.close()
 
     def move(self):
         keys = pygame.key.get_pressed()
@@ -145,6 +150,7 @@ class Player(GameObject):
                 if pygame.Rect.colliderect(bullet.rect, virus.rect):
                     self.bullets.remove(bullet)
                     virus.reset()
+                    self.score += 1
 
     def isInfected(self, viruses):
         for virus in viruses:
@@ -160,6 +166,15 @@ class Player(GameObject):
         self.bullets = pygame.sprite.Group()
         self.direction = 'u'
         self.shootKeyPressed = False
+        if self.score > int (self.highscore[0]):
+            file = open('highscore.txt', 'w')
+            file.write(str(self.score))
+            file.close()
+
+        file = open('highscore.txt', 'r')
+        self.highscore = file.readlines()
+        file.close()
+        self.score = 0
 
     def update(self, screen, viruses):
         super().update()
@@ -172,3 +187,4 @@ class Player(GameObject):
     def draw(self, screen, viruses):
         screen.blit(self.image, self.rect)
         self.update(screen, viruses)
+    
