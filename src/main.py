@@ -1,18 +1,17 @@
 # Example file showing a basic pygame "game loop"
 import pygame
 from Game_Objects.Player import Player
+from Game_Objects.Level import Level
 
-
-WIDTH = 1000
-HEIGHT = 800
-TestLevel = pygame.image.load("MapMaterials\Spawn.png")
-
+WIDTH = 800
+HEIGHT = 600
 
 # pygame setup
 pygame.init()
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 clock = pygame.time.Clock()
 running = True
+pauseState = ''
 gameState = "start"
 startButton = [290, 510, 420, 120]
 helpButton = [10, 10, 120, 120]
@@ -29,11 +28,16 @@ fontRenders = {"titleFont1" : arialFont.render("HEALTHCARE", 1, "white"),
                "helpFont" : arialFont.render("?", 1, "white"),
                "backFont" : backFont.render("BACK", 1, "white")}
 
+
 Levels = [TestLevel]
 player = Player("white", 50, 50, 5, WIDTH, HEIGHT, 1, {'u' : 1, 'd' : 1, 'l' : 1, 'r' : 1}, 1)
 
 CamX = player.rect.x
 CamY = player.rect.y
+
+testLevelImage = "MapMaterials\Spawn.png"
+testLevel = pygame.image.load(testLevelImage)
+hallway = pygame.image.load("MapMaterials\VerticlePath.png")
 
 while running:
     ev = pygame.event.poll()
@@ -92,57 +96,42 @@ while running:
 
         screen.fill("green")
         pygame.draw.rect(screen, orangish, backButton)
+
         screen.blit(fontRenders['backFont'], (25, 705))
-        
 
     elif gameState == "gaming":
-
-        if player.rect.x >  WIDTH/10 *6:
-            player.velocity = 5
-            if(player.Right == True):
-                CamX += 5
-                player.velocity = 0
-            if(keys[pygame.K_a] or keys[pygame.K_w] or keys[pygame.K_s]):
-                player.velocity = 5
-                CamX -= 0
-        elif player.rect.x <  HEIGHT/10 *4:
-            player.velocity = 5
-            if(player.Left == True):
-                CamX -= 5
-                player.velocity = 0
-            if(keys[pygame.K_d] or keys[pygame.K_w] or keys[pygame.K_s]):
-                player.velocity = 5
-                CamX += 0
-        elif player.rect.y > WIDTH/10 * 6:
-            player.velocity = 5
-            if(player.Down == True):
-                CamY += 5
-                player.velocity = 0
-            if(keys[pygame.K_a] or keys[pygame.K_w] or keys[pygame.K_d]):
-                player.velocity = 5
-                CamY -= 0
-            if(keys[pygame.K_a] and keys[pygame.K_d] and keys[pygame.K_w]):
-                player.velocity = 5
-                CamY = 0
-        elif player.rect.y <  HEIGHT/10 *4:
-            player.velocity = 5
-            if(player.Up == True):
-                CamY -= 5
-                player.velocity = 0
-            if(keys[pygame.K_a] or keys[pygame.K_d] or keys[pygame.K_s]):
-                player.velocity = 5
-                CamY += 0
 
         if ev.type == pygame.KEYDOWN:
             if ev.key == pygame.K_ESCAPE:
                 gameState = 'pause'
+                pauseState = "gaming"
+
+        if player.rect.x > 350 and player.rect.x < 522:
+            if player.rect.y > 15 and player.rect.y < 46:
+                gameState = 'Hallway'
+                print("joke that went to0 far")
+
 
         # fill the screen with a color to wipe away anything from last frame
-        screen.fill("purple")
+        # screen.fill("purple")
+        # testLevel.draw(screen)
+        screen.blit(testLevel, ((WIDTH / 2) - (testLevel.get_width() / 2), (HEIGHT / 2) - (testLevel.get_height() / 2)))
 
         # RENDER YOUR GAME HERE
-        screen.blit(TestLevel, (1100 -CamX *2,790 -CamY *2))
         player.draw(screen)
+
+
+    elif gameState == "Hallway":
+        if ev.type == pygame.KEYDOWN:
+            if ev.key == pygame.K_ESCAPE:
+                    gameState = 'pause'
+                    pauseState = "Hallway"
+
+
+        screen.fill("black")        
+        screen.blit(hallway, ((WIDTH/2 + 100) - (testLevel.get_width() / 2), (HEIGHT/2 -100) - (testLevel.get_height() / 2)))
+        player.draw(screen)
+
 
     elif gameState == "pause":
         screen.fill("red")
@@ -152,7 +141,7 @@ while running:
 
         if ev.type == pygame.KEYDOWN:
             if ev.key == pygame.K_ESCAPE:
-               gameState = 'gaming'
+               gameState = pauseState
 
     else:
         print('brooo')
