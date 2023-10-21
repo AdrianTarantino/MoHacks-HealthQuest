@@ -10,10 +10,15 @@ class Player(GameObject):
         super().__init__(color, width, height, velocity)
         self.screenWidth = screenWidth
         self.screenHeight = screenHeight
-
+        
+        self.velocity = 5
+        self.Left = False
+        self.Right = False
+        self.Up = False
+        self.Down = False 
+        
         self.image = pygame.image.load("Assets\\Right\\1.png")
         self.rect = self.image.get_rect()
-
         self.rect.x = (screenWidth / 2) - (width / 2)
         self.rect.y = (screenHeight / 2) - (height / 2)
 
@@ -25,6 +30,8 @@ class Player(GameObject):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_a]:
             self.rect.x -= self.velocity
+            self.Left = True
+            self.Right = False
             self.direction = 'l'
             self.image = pygame.image.load("Assets\\Left\\1.png")
 
@@ -32,16 +39,22 @@ class Player(GameObject):
             self.rect.x += self.velocity
             self.direction = 'r'
             self.image = pygame.image.load("Assets\\Right\\1.png")
+            self.Down = True
+            self.Up = False
 
         if keys[pygame.K_w]:
             self.rect.y -= self.velocity
             self.direction = 'u'
             self.image = pygame.image.load("Assets\\Up\\1.png")
+            self.Up = True
+            self.Down = False
 
         if keys[pygame.K_s]:
             self.rect.y += self.velocity
             self.direction = 'd'
             self.image = pygame.image.load("Assets\\Down\\1.png")
+            self.Right = True
+            self.Left = False
 
     def shoot(self, screen):
         keys = pygame.key.get_pressed()
