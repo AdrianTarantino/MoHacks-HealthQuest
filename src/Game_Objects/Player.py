@@ -6,8 +6,13 @@ class Player(GameObject):
 
     # Constructor. Pass in the color of the block,
     # and its x and y position
+<<<<<<< HEAD
+    def __init__(self, velocity, screenWidth, screenHeight):
+        super().__init__(velocity)
+=======
     def __init__(self, color, width, height, velocity, screenWidth, screenHeight, frameRate, patchNumbers, animationFrameRate):
         super().__init__(color, width, height, velocity)
+>>>>>>> main
         self.screenWidth = screenWidth
         self.screenHeight = screenHeight
         self.frameRate = frameRate
@@ -15,15 +20,11 @@ class Player(GameObject):
         self.animationFrameRate = animationFrameRate
         
         self.velocity = 5
-        self.Left = False
-        self.Right = False
-        self.Up = False
-        self.Down = False 
         
         self.image = pygame.image.load("Assets\\Right\\1.png")
         self.rect = self.image.get_rect()
-        self.rect.x = (screenWidth / 2) - (width / 2)
-        self.rect.y = (screenHeight / 2) - (height / 2)
+        self.rect.x = (screenWidth / 2) - (self.rect.width / 2)
+        self.rect.y = (screenHeight / 2) - (self.rect.height / 2)
 
         self.bullets = pygame.sprite.Group()
         self.direction = 'u'
@@ -39,8 +40,6 @@ class Player(GameObject):
 
         if keys[pygame.K_a]:
             self.rect.x -= self.velocity
-            self.Left = True
-            self.Right = False
             self.direction = 'l'
 
             if self.animationFrameRate%3 == 0:
@@ -55,6 +54,9 @@ class Player(GameObject):
         if keys[pygame.K_d]:
             self.rect.x += self.velocity
             self.direction = 'r'
+<<<<<<< HEAD
+            self.image = pygame.image.load("Assets\\Right\\1.png")
+=======
             if self.animationFrameRate%3 == 0:
                 if self.patchNumbers['r'] <= 4:
                     self.image = pygame.image.load(f"Assets\\Right\\{self.patchNumbers['r']}.png")
@@ -65,10 +67,14 @@ class Player(GameObject):
                     self.patchNumbers['r'] += 1
             self.Down = True
             self.Up = False
+>>>>>>> main
 
         if keys[pygame.K_w]:
             self.rect.y -= self.velocity
             self.direction = 'u'
+<<<<<<< HEAD
+            self.image = pygame.image.load("Assets\\Up\\1.png")
+=======
             if self.animationFrameRate%3 == 0:
                 if self.patchNumbers['u'] <= 4:
                     self.image = pygame.image.load(f"Assets\\Up\\{self.patchNumbers['u']}.png")
@@ -79,10 +85,14 @@ class Player(GameObject):
                     self.patchNumbers['u'] += 1
             self.Up = True
             self.Down = False
+>>>>>>> main
 
         if keys[pygame.K_s]:
             self.rect.y += self.velocity
             self.direction = 'd'
+<<<<<<< HEAD
+            self.image = pygame.image.load("Assets\\Down\\1.png")
+=======
             if self.animationFrameRate%3 == 0:
                 if self.patchNumbers['d'] <= 4:
                     self.image = pygame.image.load(f"Assets\\Down\\{self.patchNumbers['d']}.png")
@@ -93,6 +103,7 @@ class Player(GameObject):
                     self.patchNumbers['d'] += 1
             self.Right = True
             self.Left = False
+>>>>>>> main
 
     def shoot(self, screen):
         keys = pygame.key.get_pressed()
@@ -123,10 +134,7 @@ class Player(GameObject):
                 bulletHeight = 10
                 bulletVelocity = 20
 
-                self.bullets.add(Bullet("grey", 
-                                        bulletWidth, 
-                                        bulletHeight, 
-                                        bulletVelocity, 
+                self.bullets.add(Bullet(bulletVelocity, 
                                         self.direction, 
                                         self.rect.x + (self.rect.width / 2) - (bulletWidth / 2) + bulletOffsetX, 
                                         self.rect.y + (self.rect.height / 2) - (bulletHeight  /2) + bulletOffsetY))
@@ -145,16 +153,37 @@ class Player(GameObject):
                 print("killing bullet")
                 self.bullets.remove(bullet)
 
-    def update(self, screen):
+    def bulletCollide(self, viruses):
+        for bullet in self.bullets:
+            for virus in viruses:
+                if pygame.Rect.colliderect(bullet.rect, virus.rect):
+                    self.bullets.remove(bullet)
+                    virus.reset()
+
+    def isInfected(self, viruses):
+        for virus in viruses:
+            if pygame.Rect.colliderect(virus.rect, self.rect):
+                return True
+            
+        return False
+
+    def update(self, screen, viruses):
         super().update()
         self.move()
         self.shoot(screen)
         self.bullets.update()
         self.filterBullets()
+        self.bulletCollide(viruses)
 
+<<<<<<< HEAD
+    def draw(self, screen, viruses):
+        screen.blit(self.image, self.rect)
+        self.update(screen, viruses)
+=======
     def draw(self, screen):
 
         screen.blit
         screen.blit(self.image, self.rect)
 
         self.update(screen)
+>>>>>>> main
