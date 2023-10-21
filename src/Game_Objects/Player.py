@@ -92,13 +92,28 @@ class Player(GameObject):
                 print("killing bullet")
                 self.bullets.remove(bullet)
 
-    def update(self, screen):
+    def bulletCollide(self, viruses):
+        for bullet in self.bullets:
+            for virus in viruses:
+                if pygame.Rect.colliderect(bullet.rect, virus.rect):
+                    self.bullets.remove(bullet)
+                    virus.reset()
+
+    def isInfected(self, viruses):
+        for virus in viruses:
+            if pygame.Rect.colliderect(virus.rect, self.rect):
+                return True
+            
+        return False
+
+    def update(self, screen, viruses):
         super().update()
         self.move()
         self.shoot(screen)
         self.bullets.update()
         self.filterBullets()
+        self.bulletCollide(viruses)
 
-    def draw(self, screen):
+    def draw(self, screen, viruses):
         screen.blit(self.image, self.rect)
-        self.update(screen)
+        self.update(screen, viruses)

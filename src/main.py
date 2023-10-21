@@ -28,8 +28,12 @@ fontRenders = {"titleFont1" : arialFont.render("HEALTHCARE", 1, "white"),
                "helpFont" : arialFont.render("?", 1, "white"),
                "backFont" : backFont.render("BACK", 1, "white")}
 
-player = Player(5, WIDTH, HEIGHT)
-testVirus = Virus(13, WIDTH, HEIGHT)
+player = Player(7, WIDTH, HEIGHT)
+viruses = pygame.sprite.Group()
+viruses.add(Virus(8, WIDTH, HEIGHT),
+            Virus(8, WIDTH, HEIGHT),
+            Virus(8, WIDTH, HEIGHT),
+            Virus(8, WIDTH, HEIGHT))
 
 CamX = player.rect.x
 CamY = player.rect.y
@@ -108,8 +112,13 @@ while running:
         screen.blit(testLevel, ((WIDTH / 2) - (testLevel.get_width() / 2), (HEIGHT / 2) - (testLevel.get_height() / 2)))
 
         # RENDER YOUR GAME HERE
-        player.draw(screen)
-        testVirus.draw(screen)
+        player.draw(screen, viruses)
+        if player.isInfected(viruses):
+            print("dead")
+            gameState = "end"
+
+        viruses.draw(screen)
+        viruses.update(screen)
 
     elif gameState == "pause":
         screen.fill("red")
