@@ -3,14 +3,14 @@ import pygame
 
 
 class Bullet(GameObject):
-    def __init__(self, color, width, height, velocity, direction, startingXPosition, startingYPosition):
-        super().__init__(color, width, height, velocity)
+    def __init__(self, velocity, direction, startingXPosition, startingYPosition):
+        super().__init__(velocity)
         self.direction = direction
 
         match self.direction:
             case 'u':
                 self.image = pygame.image.load("Assets\\Syringe\\up.png")
-                
+
             case 'd':
                 self.image = pygame.image.load("Assets\\Syringe\\down.png")
                 

@@ -2,6 +2,7 @@
 import pygame
 from Game_Objects.Player import Player
 from Game_Objects.Level import Level
+from Game_Objects.Virus import Virus
 
 WIDTH = 1280
 HEIGHT = 720
@@ -27,7 +28,8 @@ fontRenders = {"titleFont1" : arialFont.render("HEALTHCARE", 1, "white"),
                "helpFont" : arialFont.render("?", 1, "white"),
                "backFont" : backFont.render("BACK", 1, "white")}
 
-player = Player("white", 50, 50, 5, WIDTH, HEIGHT)
+player = Player(5, WIDTH, HEIGHT)
+testVirus = Virus(13, WIDTH, HEIGHT)
 
 CamX = player.rect.x
 CamY = player.rect.y
@@ -96,43 +98,6 @@ while running:
         screen.blit(fontRenders['backFont'], (25, 705))
 
     elif gameState == "gaming":
-
-        if player.rect.x >  WIDTH/10 *6:
-            player.velocity = 5
-            if(player.Right == True):
-                CamX += 5
-                player.velocity = 0
-            if(keys[pygame.K_a] or keys[pygame.K_w] or keys[pygame.K_s]):
-                player.velocity = 5
-                CamX -= 0
-        elif player.rect.x <  HEIGHT/10 *4:
-            player.velocity = 5
-            if(player.Left == True):
-                CamX -= 5
-                player.velocity = 0
-            if(keys[pygame.K_d] or keys[pygame.K_w] or keys[pygame.K_s]):
-                player.velocity = 5
-                CamX += 0
-        elif player.rect.y > WIDTH/10 * 6:
-            player.velocity = 5
-            if(player.Down == True):
-                CamY += 5
-                player.velocity = 0
-            if(keys[pygame.K_a] or keys[pygame.K_w] or keys[pygame.K_d]):
-                player.velocity = 5
-                CamY -= 0
-            if(keys[pygame.K_a] and keys[pygame.K_d] and keys[pygame.K_w]):
-                player.velocity = 5
-                CamY = 0
-        elif player.rect.y <  HEIGHT/10 *4:
-            player.velocity = 5
-            if(player.Up == True):
-                CamY -= 5
-                player.velocity = 0
-            if(keys[pygame.K_a] or keys[pygame.K_d] or keys[pygame.K_s]):
-                player.velocity = 5
-                CamY += 0
-
         if ev.type == pygame.KEYDOWN:
             if ev.key == pygame.K_ESCAPE:
                 gameState = 'pause'
@@ -144,6 +109,7 @@ while running:
 
         # RENDER YOUR GAME HERE
         player.draw(screen)
+        testVirus.draw(screen)
 
     elif gameState == "pause":
         screen.fill("red")
