@@ -10,13 +10,15 @@ class Player(GameObject):
         super().__init__(color, width, height, velocity)
         self.screenWidth = screenWidth
         self.screenHeight = screenHeight
-
+        
         self.velocity = 5
         self.Left = False
         self.Right = False
         self.Up = False
         self.Down = False 
-
+        
+        self.image = pygame.image.load("Assets\\Right\\1.png")
+        self.rect = self.image.get_rect()
         self.rect.x = (screenWidth / 2) - (width / 2)
         self.rect.y = (screenHeight / 2) - (height / 2)
 
@@ -31,27 +33,54 @@ class Player(GameObject):
             self.Left = True
             self.Right = False
             self.direction = 'l'
+            self.image = pygame.image.load("Assets\\Left\\1.png")
+
         if keys[pygame.K_d]:
             self.rect.x += self.velocity
             self.direction = 'r'
-            self.Right = True
-            self.Left = False
+            self.image = pygame.image.load("Assets\\Right\\1.png")
+            self.Down = True
+            self.Up = False
+
         if keys[pygame.K_w]:
             self.rect.y -= self.velocity
             self.direction = 'u'
+            self.image = pygame.image.load("Assets\\Up\\1.png")
             self.Up = True
             self.Down = False
+
         if keys[pygame.K_s]:
             self.rect.y += self.velocity
             self.direction = 'd'
-            self.Up = False
-            self.Down = True
+            self.image = pygame.image.load("Assets\\Down\\1.png")
+            self.Right = True
+            self.Left = False
 
     def shoot(self, screen):
         keys = pygame.key.get_pressed()
         if keys[pygame.K_SPACE]:
             if not self.shootKeyPressed:
                 self.shootKeyPressed = True
+
+                bulletOffsetY = 0
+                bulletOffsetX = 0
+
+                if self.direction == 'l':
+                    bulletOffsetX -= 45
+
+                if self.direction == 'r':
+                    bulletOffsetX += 25
+
+                if self.direction == 'l' or self.direction == 'r':
+                    bulletOffsetY -= 20
+
+
+                if self.direction == 'u':
+                    bulletOffsetY -= 40
+
+                if self.direction == 'u' or self.direction == 'd':
+                    bulletOffsetX -= 15
+                    
                 bulletWidth = 10
                 bulletHeight = 10
                 bulletVelocity = 20
@@ -61,8 +90,8 @@ class Player(GameObject):
                                         bulletHeight, 
                                         bulletVelocity, 
                                         self.direction, 
-                                        self.rect.x + (self.rect.width / 2) - (bulletWidth / 2), 
-                                        self.rect.y + (self.rect.height / 2) - (bulletHeight  /2)))
+                                        self.rect.x + (self.rect.width / 2) - (bulletWidth / 2) + bulletOffsetX, 
+                                        self.rect.y + (self.rect.height / 2) - (bulletHeight  /2) + bulletOffsetY))
         else:
             self.shootKeyPressed = False
 
@@ -86,5 +115,5 @@ class Player(GameObject):
         self.filterBullets()
 
     def draw(self, screen):
-        self.update(screen)
         screen.blit(self.image, self.rect)
+        self.update(screen)
