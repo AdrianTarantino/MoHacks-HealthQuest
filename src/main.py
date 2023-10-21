@@ -14,23 +14,23 @@ running = True
 pauseState = ''
 BossAlive = True
 gameState = "start"
-startButton = [290, 510, 420, 120]
-helpButton = [10, 10, 120, 120]
-backButton = [10, 700, 200, 75]
+startButton = [WIDTH * 290/1000, HEIGHT * 7/10, WIDTH * 420/1000, HEIGHT * 140/1000]
+helpButton = [10, 10, 70, 70]
+backButton = [10, 540, 180, 50]
 reddish = 'red'
 orangish = '#ffb300'
-arialFont = pygame.font.SysFont("Arial", 120, True, False)
-backFont = pygame.font.SysFont("Arial", 60, "white")
+arialFont = pygame.font.SysFont("Arial", int (WIDTH * 120/1000), True, False)
+backFont = pygame.font.SysFont("Arial", int (WIDTH * 60/1000), True, False)
+helpFont = pygame.font.SysFont("Arial", 70, True, False)
 fontRenders = {"titleFont1" : arialFont.render("HEALTHCARE", 1, "white"),
                "titleFont2" : arialFont.render("HUSTLE", 1, "white"),
                "pauseFont1" : arialFont.render("PAUSE", 1, "white"),
                "pauseFont2" : arialFont.render("SCREEN", 1, "white"),
                "startFont" : arialFont.render("START", 1, "white"),
-               "helpFont" : arialFont.render("?", 1, "white"),
+               "helpFont" : helpFont.render("?", 1, "white"),
                "backFont" : backFont.render("BACK", 1, "white")}
 
 
-Levels = [TestLevel]
 player = Player("white", 50, 50, 5, WIDTH, HEIGHT, 1, {'u' : 1, 'd' : 1, 'l' : 1, 'r' : 1}, 1)
 
 CamX = player.rect.x
@@ -82,10 +82,10 @@ while running:
         # displaying stuff
         pygame.draw.rect(screen, reddish, startButton)
         pygame.draw.rect(screen, orangish, helpButton)
-        screen.blit(fontRenders['helpFont'], (30, 5))
-        screen.blit(fontRenders['startFont'], (305, 505))
-        screen.blit(fontRenders['titleFont1'], (100, 150))
-        screen.blit(fontRenders['titleFont2'], (255, 270))
+        screen.blit(fontRenders['helpFont'], (24, 5))
+        screen.blit(fontRenders['startFont'], (startButton[0] + WIDTH * 1/100, startButton[1] - 10))
+        screen.blit(fontRenders['titleFont1'], (WIDTH * 1/10, HEIGHT * 150/1000))
+        screen.blit(fontRenders['titleFont2'], (WIDTH * 2/10 + WIDTH * 45/800, HEIGHT * 300/1000))
 
     elif gameState == "help":
         orangish = '#ffb300'
@@ -102,7 +102,7 @@ while running:
         screen.fill("green")
         pygame.draw.rect(screen, orangish, backButton)
 
-        screen.blit(fontRenders['backFont'], (25, 705))
+        screen.blit(fontRenders['backFont'], (backButton[0] + 10, backButton[1]))
 
     elif gameState == "gaming":
 
@@ -114,7 +114,7 @@ while running:
         if player.rect.x > 350 and player.rect.x < 522:
             if player.rect.y > 15 and player.rect.y < 46:
                 gameState = 'Hallway'
-                print("joke that went to0 far")
+                print("joke that went too far")
                 player.rect.x, player.rect.y = (330, 450)
 
         # fill the screen with a color to wipe away anything from last frame
@@ -180,6 +180,8 @@ while running:
         
         if player.rect.x >= 750:
             gameState = "Boss"
+            player.rect.x, player.rect.y = (50,300)
+
 
 
         screen.blit(PathWBranch, (0,0))
