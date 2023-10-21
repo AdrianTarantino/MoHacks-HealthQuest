@@ -15,7 +15,7 @@ clock = pygame.time.Clock()
 running = True
 Levels = [TestLevel]
 
-player = Player("white", 50, 50)
+player = Player("white", 50, 50, 5, WIDTH, HEIGHT)
 
 CamX = player.rect.x
 CamY = player.rect.y
