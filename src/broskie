@@ -43,7 +43,7 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-    
+
     keys = pygame.key.get_pressed()
         
     mousePos = pygame.mouse.get_pos()
@@ -135,7 +135,7 @@ while running:
 
         if ev.type == pygame.KEYDOWN:
             if ev.key == pygame.K_ESCAPE:
-                gameState = 'pause'
+                gameState = "pause"
 
         # fill the screen with a color to wipe away anything from last frame
         screen.fill("purple")
