@@ -31,17 +31,12 @@ fontRenders = {"titleFont1" : arialFont.render("HEALTHCARE", 1, "white"),
                "helpFont" : helpFont.render("?", 1, "white"),
                "backFont" : backFont.render("BACK", 1, "white")}
 
-<<<<<<< HEAD
-player = Player(7, WIDTH, HEIGHT)
+player = Player(7, WIDTH, HEIGHT, 1, {'d' : 1, 'u' : 1, 'r' : 1, 'l' : 1}, 1)
 viruses = pygame.sprite.Group()
 viruses.add(Virus(8, WIDTH, HEIGHT),
             Virus(8, WIDTH, HEIGHT),
             Virus(8, WIDTH, HEIGHT),
             Virus(8, WIDTH, HEIGHT))
-=======
-
-player = Player("white", 50, 50, 5, WIDTH, HEIGHT, 1, {'u' : 1, 'd' : 1, 'l' : 1, 'r' : 1}, 1)
->>>>>>> main
 
 CamX = player.rect.x
 CamY = player.rect.y
@@ -115,10 +110,6 @@ while running:
         screen.blit(fontRenders['backFont'], (backButton[0] + 10, backButton[1]))
 
     elif gameState == "gaming":
-<<<<<<< HEAD
-=======
-
->>>>>>> main
         if ev.type == pygame.KEYDOWN:
             if ev.key == pygame.K_ESCAPE:
                 gameState = 'pause'
@@ -167,7 +158,7 @@ while running:
         
         screen.fill("black")        
         screen.blit(hallwaySplit, ((WIDTH/2 + 100) - (testLevel.get_width() / 2), (HEIGHT/2 -100) - (testLevel.get_height() / 2)))
-        player.draw(screen)
+        player.draw(screen, viruses)
     
     elif gameState == "ExamRoomcluster":
         if ev.type == pygame.KEYDOWN:
@@ -181,7 +172,7 @@ while running:
 
 
         screen.blit(Cluster, (0,0))
-        player.draw(screen)
+        player.draw(screen, viruses)
     
     elif gameState == "Path":
         if ev.type == pygame.KEYDOWN:
@@ -204,7 +195,7 @@ while running:
 
 
         screen.blit(PathWBranch, (0,0))
-        player.draw(screen)
+        player.draw(screen, viruses)
 
     elif gameState == "Triage":
         if ev.type == pygame.KEYDOWN:
@@ -217,7 +208,7 @@ while running:
             player.rect.x, player.rect.y = (400,500)
 
         screen.blit(triage, (0,0))
-        player.draw(screen)
+        player.draw(screen, viruses)
 
     elif gameState == "Boss":
         if ev.type == pygame.KEYDOWN:
@@ -230,7 +221,7 @@ while running:
             player.rect.x, player.rect.y = (400,500)
 
         screen.blit(BossRoom, (0,0))
-        player.draw(screen)
+        player.draw(screen, viruses)
     
     
 
@@ -249,6 +240,10 @@ while running:
         print('brooo')
         pygame.time.wait(1000)
         gameState = "start"
+
+        player.reset()
+        for virus in viruses:
+            virus.reset()
 
     # flip() the display to put your work on screen
     pygame.display.flip()
