@@ -11,7 +11,7 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 clock = pygame.time.Clock()
 running = True
 
-player = Player("white", 50, 50)
+player = Player("white", 50, 50, 5, WIDTH, HEIGHT)
 
 while running:
     # poll for events
