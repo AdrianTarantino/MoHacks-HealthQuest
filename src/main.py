@@ -30,7 +30,6 @@ fontRenders = {"titleFont1" : arialFont.render("HEALTHCARE", 1, "white"),
                "backFont" : backFont.render("BACK", 1, "white")}
 
 
-Levels = [TestLevel]
 player = Player("white", 50, 50, 5, WIDTH, HEIGHT, 1, {'u' : 1, 'd' : 1, 'l' : 1, 'r' : 1}, 1)
 
 CamX = player.rect.x
@@ -114,7 +113,7 @@ while running:
         if player.rect.x > 350 and player.rect.x < 522:
             if player.rect.y > 15 and player.rect.y < 46:
                 gameState = 'Hallway'
-                print("joke that went to0 far")
+                print("joke that went too far")
                 player.rect.x, player.rect.y = (330, 450)
 
         # fill the screen with a color to wipe away anything from last frame
@@ -180,6 +179,8 @@ while running:
         
         if player.rect.x >= 750:
             gameState = "Boss"
+            player.rect.x, player.rect.y = (50,300)
+
 
 
         screen.blit(PathWBranch, (0,0))
