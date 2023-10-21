@@ -6,10 +6,13 @@ class Player(GameObject):
 
     # Constructor. Pass in the color of the block,
     # and its x and y position
-    def __init__(self, color, width, height, velocity, screenWidth, screenHeight):
+    def __init__(self, color, width, height, velocity, screenWidth, screenHeight, frameRate, patchNumbers, animationFrameRate):
         super().__init__(color, width, height, velocity)
         self.screenWidth = screenWidth
         self.screenHeight = screenHeight
+        self.frameRate = frameRate
+        self.patchNumbers = patchNumbers
+        self.animationFrameRate = animationFrameRate
         
         self.velocity = 5
         self.Left = False
@@ -28,31 +31,66 @@ class Player(GameObject):
 
     def move(self):
         keys = pygame.key.get_pressed()
+
+        if self.animationFrameRate <= 60:
+                self.animationFrameRate += 1
+        else:
+                self.animationFrameRate = 1
+
         if keys[pygame.K_a]:
             self.rect.x -= self.velocity
             self.Left = True
             self.Right = False
             self.direction = 'l'
-            self.image = pygame.image.load("Assets\\Left\\1.png")
+
+            if self.animationFrameRate%3 == 0:
+                if self.patchNumbers['l'] <= 4:
+                    self.image = pygame.image.load(f"Assets\\Left\\{self.patchNumbers['l']}.png")
+                    self.patchNumbers['l'] += 1
+                else:
+                    self.patchNumbers['l'] = 1
+                    self.image = pygame.image.load(f"Assets\\Left\\{self.patchNumbers['l']}.png")
+                    self.patchNumbers['l'] += 1
 
         if keys[pygame.K_d]:
             self.rect.x += self.velocity
             self.direction = 'r'
-            self.image = pygame.image.load("Assets\\Right\\1.png")
+            if self.animationFrameRate%3 == 0:
+                if self.patchNumbers['r'] <= 4:
+                    self.image = pygame.image.load(f"Assets\\Right\\{self.patchNumbers['r']}.png")
+                    self.patchNumbers['r'] += 1
+                else:
+                    self.patchNumbers['r'] = 1
+                    self.image = pygame.image.load(f"Assets\\Right\\{self.patchNumbers['r']}.png")
+                    self.patchNumbers['r'] += 1
             self.Down = True
             self.Up = False
 
         if keys[pygame.K_w]:
             self.rect.y -= self.velocity
             self.direction = 'u'
-            self.image = pygame.image.load("Assets\\Up\\1.png")
+            if self.animationFrameRate%3 == 0:
+                if self.patchNumbers['u'] <= 4:
+                    self.image = pygame.image.load(f"Assets\\Up\\{self.patchNumbers['u']}.png")
+                    self.patchNumbers['u'] += 1
+                else:
+                    self.patchNumbers['u'] = 1
+                    self.image = pygame.image.load(f"Assets\\Up\\{self.patchNumbers['u']}.png")
+                    self.patchNumbers['u'] += 1
             self.Up = True
             self.Down = False
 
         if keys[pygame.K_s]:
             self.rect.y += self.velocity
             self.direction = 'd'
-            self.image = pygame.image.load("Assets\\Down\\1.png")
+            if self.animationFrameRate%3 == 0:
+                if self.patchNumbers['d'] <= 4:
+                    self.image = pygame.image.load(f"Assets\\Down\\{self.patchNumbers['d']}.png")
+                    self.patchNumbers['d'] += 1
+                else:
+                    self.patchNumbers['d'] = 1
+                    self.image = pygame.image.load(f"Assets\\Down\\{self.patchNumbers['d']}.png")
+                    self.patchNumbers['d'] += 1
             self.Right = True
             self.Left = False
 
@@ -115,5 +153,8 @@ class Player(GameObject):
         self.filterBullets()
 
     def draw(self, screen):
+
+        screen.blit
         screen.blit(self.image, self.rect)
+
         self.update(screen)

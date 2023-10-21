@@ -28,7 +28,9 @@ fontRenders = {"titleFont1" : arialFont.render("HEALTHCARE", 1, "white"),
                "helpFont" : arialFont.render("?", 1, "white"),
                "backFont" : backFont.render("BACK", 1, "white")}
 
-player = Player("white", 50, 50, 5, WIDTH, HEIGHT)
+
+Levels = [TestLevel]
+player = Player("white", 50, 50, 5, WIDTH, HEIGHT, 1, {'u' : 1, 'd' : 1, 'l' : 1, 'r' : 1}, 1)
 
 CamX = player.rect.x
 CamY = player.rect.y
