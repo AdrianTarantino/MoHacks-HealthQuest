@@ -6,10 +6,18 @@ class Player(GameObject):
 
     # Constructor. Pass in the color of the block,
     # and its x and y position
+<<<<<<< HEAD
     def __init__(self, velocity, screenWidth, screenHeight):
         super().__init__(velocity)
+=======
+    def __init__(self, color, width, height, velocity, screenWidth, screenHeight, frameRate, patchNumbers, animationFrameRate):
+        super().__init__(color, width, height, velocity)
+>>>>>>> main
         self.screenWidth = screenWidth
         self.screenHeight = screenHeight
+        self.frameRate = frameRate
+        self.patchNumbers = patchNumbers
+        self.animationFrameRate = animationFrameRate
         
         self.velocity = 5
         
@@ -24,25 +32,78 @@ class Player(GameObject):
 
     def move(self):
         keys = pygame.key.get_pressed()
+
+        if self.animationFrameRate <= 60:
+                self.animationFrameRate += 1
+        else:
+                self.animationFrameRate = 1
+
         if keys[pygame.K_a]:
             self.rect.x -= self.velocity
             self.direction = 'l'
-            self.image = pygame.image.load("Assets\\Left\\1.png")
+
+            if self.animationFrameRate%3 == 0:
+                if self.patchNumbers['l'] <= 4:
+                    self.image = pygame.image.load(f"Assets\\Left\\{self.patchNumbers['l']}.png")
+                    self.patchNumbers['l'] += 1
+                else:
+                    self.patchNumbers['l'] = 1
+                    self.image = pygame.image.load(f"Assets\\Left\\{self.patchNumbers['l']}.png")
+                    self.patchNumbers['l'] += 1
 
         if keys[pygame.K_d]:
             self.rect.x += self.velocity
             self.direction = 'r'
+<<<<<<< HEAD
             self.image = pygame.image.load("Assets\\Right\\1.png")
+=======
+            if self.animationFrameRate%3 == 0:
+                if self.patchNumbers['r'] <= 4:
+                    self.image = pygame.image.load(f"Assets\\Right\\{self.patchNumbers['r']}.png")
+                    self.patchNumbers['r'] += 1
+                else:
+                    self.patchNumbers['r'] = 1
+                    self.image = pygame.image.load(f"Assets\\Right\\{self.patchNumbers['r']}.png")
+                    self.patchNumbers['r'] += 1
+            self.Down = True
+            self.Up = False
+>>>>>>> main
 
         if keys[pygame.K_w]:
             self.rect.y -= self.velocity
             self.direction = 'u'
+<<<<<<< HEAD
             self.image = pygame.image.load("Assets\\Up\\1.png")
+=======
+            if self.animationFrameRate%3 == 0:
+                if self.patchNumbers['u'] <= 4:
+                    self.image = pygame.image.load(f"Assets\\Up\\{self.patchNumbers['u']}.png")
+                    self.patchNumbers['u'] += 1
+                else:
+                    self.patchNumbers['u'] = 1
+                    self.image = pygame.image.load(f"Assets\\Up\\{self.patchNumbers['u']}.png")
+                    self.patchNumbers['u'] += 1
+            self.Up = True
+            self.Down = False
+>>>>>>> main
 
         if keys[pygame.K_s]:
             self.rect.y += self.velocity
             self.direction = 'd'
+<<<<<<< HEAD
             self.image = pygame.image.load("Assets\\Down\\1.png")
+=======
+            if self.animationFrameRate%3 == 0:
+                if self.patchNumbers['d'] <= 4:
+                    self.image = pygame.image.load(f"Assets\\Down\\{self.patchNumbers['d']}.png")
+                    self.patchNumbers['d'] += 1
+                else:
+                    self.patchNumbers['d'] = 1
+                    self.image = pygame.image.load(f"Assets\\Down\\{self.patchNumbers['d']}.png")
+                    self.patchNumbers['d'] += 1
+            self.Right = True
+            self.Left = False
+>>>>>>> main
 
     def shoot(self, screen):
         keys = pygame.key.get_pressed()
@@ -114,6 +175,15 @@ class Player(GameObject):
         self.filterBullets()
         self.bulletCollide(viruses)
 
+<<<<<<< HEAD
     def draw(self, screen, viruses):
         screen.blit(self.image, self.rect)
         self.update(screen, viruses)
+=======
+    def draw(self, screen):
+
+        screen.blit
+        screen.blit(self.image, self.rect)
+
+        self.update(screen)
+>>>>>>> main
