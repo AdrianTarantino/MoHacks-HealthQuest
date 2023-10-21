@@ -10,7 +10,7 @@ HEIGHT = 600
 # pygame setup
 pygame.init()
 pygame.mixer.init()
-pygame.mixer.music.load("Assets\\music\\backgroundSong.mp3") 
+pygame.mixer.music.load("Assets\\music\\backgroundSong (fast).mp3") 
 pygame.mixer.music.play(-1,0.0)
 
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
