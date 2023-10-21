@@ -5,7 +5,7 @@ from Game_Objects.Player import Player
 
 WIDTH = 1000
 HEIGHT = 800
-TestLevel = pygame.image.load("MapMaterials\TestLevel.png")
+TestLevel = pygame.image.load("MapMaterials\Spawn.png")
 
 
 # pygame setup
@@ -66,14 +66,10 @@ while running:
             player.velocity = 5
             CamY += 0
         
-        
-    #elif(player.rect.x > WIDTH /10 * 4 and player.rect.x < WIDTH /10 *6):
-        #if(player.rect.y > HEIGHT /10 *4 and player.rect.y < HEIGHT /10 *6):
-            #player.velocity = 5
 
     # fill the screen with a color to wipe away anything from last frame
     screen.fill("purple")
-    screen.blit(TestLevel, (-95 -CamX *2,-1846 -CamY *2))
+    screen.blit(TestLevel, (1100 -CamX *2,790 -CamY *2))
     #screen.blit(TestLevel, (player.rect.x -CamX, player.rect.y -CamY)) COME BACK TO THE MOVEMENT THINGY
 
 
