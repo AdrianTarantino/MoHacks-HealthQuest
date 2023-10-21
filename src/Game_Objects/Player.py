@@ -52,8 +52,15 @@ class Player(GameObject):
                 bulletOffsetY = 0
                 bulletOffsetX = 0
 
+                if self.direction == 'l':
+                    bulletOffsetX -= 45
+
+                if self.direction == 'r':
+                    bulletOffsetX += 25
+
                 if self.direction == 'l' or self.direction == 'r':
                     bulletOffsetY -= 20
+
 
                 if self.direction == 'u':
                     bulletOffsetY -= 40
