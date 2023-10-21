@@ -1,12 +1,10 @@
 # Example file showing a basic pygame "game loop"
 import pygame
 from Game_Objects.Player import Player
+from Game_Objects.Level import Level
 
-
-WIDTH = 1000
-HEIGHT = 800
-TestLevel = pygame.image.load("MapMaterials\Spawn.png")
-
+WIDTH = 1280
+HEIGHT = 720
 
 # pygame setup
 pygame.init()
@@ -29,11 +27,13 @@ fontRenders = {"titleFont1" : arialFont.render("HEALTHCARE", 1, "white"),
                "helpFont" : arialFont.render("?", 1, "white"),
                "backFont" : backFont.render("BACK", 1, "white")}
 
-Levels = [TestLevel]
 player = Player("white", 50, 50, 5, WIDTH, HEIGHT)
 
 CamX = player.rect.x
 CamY = player.rect.y
+
+testLevelImage = "MapMaterials\Spawn.png"
+testLevel = pygame.image.load(testLevelImage)
 
 while running:
     ev = pygame.event.poll()
@@ -92,8 +92,8 @@ while running:
 
         screen.fill("green")
         pygame.draw.rect(screen, orangish, backButton)
+
         screen.blit(fontRenders['backFont'], (25, 705))
-        
 
     elif gameState == "gaming":
 
@@ -138,10 +138,11 @@ while running:
                 gameState = 'pause'
 
         # fill the screen with a color to wipe away anything from last frame
-        screen.fill("purple")
+        # screen.fill("purple")
+        # testLevel.draw(screen)
+        screen.blit(testLevel, ((WIDTH / 2) - (testLevel.get_width() / 2), (HEIGHT / 2) - (testLevel.get_height() / 2)))
 
         # RENDER YOUR GAME HERE
-        screen.blit(TestLevel, (1100 -CamX *2,790 -CamY *2))
         player.draw(screen)
 
     elif gameState == "pause":
