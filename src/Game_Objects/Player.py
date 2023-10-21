@@ -172,3 +172,4 @@ class Player(GameObject):
     def draw(self, screen, viruses):
         screen.blit(self.image, self.rect)
         self.update(screen, viruses)
+    

@@ -13,7 +13,6 @@ screen = pygame.display.set_mode((WIDTH, HEIGHT))
 clock = pygame.time.Clock()
 running = True
 pauseState = ''
-BossAlive = True
 gameState = "start"
 startButton = [WIDTH * 290/1000, HEIGHT * 7/10, WIDTH * 420/1000, HEIGHT * 140/1000]
 helpButton = [10, 10, 70, 70]
@@ -32,6 +31,7 @@ fontRenders = {"titleFont1" : arialFont.render("HEALTHCARE", 1, "white"),
                "backFont" : backFont.render("BACK", 1, "white")}
 
 player = Player(7, WIDTH, HEIGHT, 1, {'d' : 1, 'u' : 1, 'r' : 1, 'l' : 1}, 1)
+
 viruses = pygame.sprite.Group()
 viruses.add(Virus(8, WIDTH, HEIGHT),
             Virus(8, WIDTH, HEIGHT),
@@ -165,6 +165,10 @@ while running:
             if ev.key == pygame.K_ESCAPE:
                     gameState = 'pause'
                     pauseState = "ExamRoomcluster"
+        if player.isInfected(viruses):
+            print("dead")
+            gameState = "end"
+    
 
         if player.rect.y >= 600:
             gameState = "Hallway"
@@ -173,6 +177,8 @@ while running:
 
         screen.blit(Cluster, (0,0))
         player.draw(screen, viruses)
+        viruses.draw(screen)
+        viruses.update(screen)
     
     elif gameState == "Path":
         if ev.type == pygame.KEYDOWN:
@@ -207,8 +213,14 @@ while running:
             gameState = "Path"
             player.rect.x, player.rect.y = (400,500)
 
+        if player.isInfected(viruses):
+            print("dead")
+            gameState = "end"
+
         screen.blit(triage, (0,0))
         player.draw(screen, viruses)
+        viruses.draw(screen)
+        viruses.update(screen)
 
     elif gameState == "Boss":
         if ev.type == pygame.KEYDOWN:
@@ -216,13 +228,8 @@ while running:
                     gameState = 'pause'
                     pauseState = "Boss"
 
-        if BossAlive == False and player.rect.x <= 0:
-            gameState = "Path"
-            player.rect.x, player.rect.y = (400,500)
-
         screen.blit(BossRoom, (0,0))
-        player.draw(screen, viruses)
-    
+        player.draw(screen, viruses)    
     
 
 
