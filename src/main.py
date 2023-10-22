@@ -282,6 +282,7 @@ while running:
 
         if bossVirus.health <= 0 and player.rect.x <= 0:
             gameState = "Path"
+            player.score += 100
             player.rect.x, player.rect.y = (WIDTH - 50, HEIGHT / 2)
 
         if pygame.Rect.colliderect(player.rect, bossVirus.rect):

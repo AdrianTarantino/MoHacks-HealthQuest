@@ -19,7 +19,8 @@ class BossVirus(GameObject):
             return False
     
     def move(self, playerX, playerY):
-        if self.health <= 250: return 
+        if self.health <= 250: 
+            self.velocity += 0.01
         if playerX > self.rect.x:
             self.rect.x += self.velocity
         if playerX < self.rect.x:
