@@ -1,9 +1,10 @@
-# Example file showing a basic pygame "game loop"
+
 import pygame
 from Game_Objects.Player import Player
 from Game_Objects.Level import Level
 from Game_Objects.Virus import Virus
 from Game_Objects.BossVirus import BossVirus
+
 
 WIDTH = 800
 HEIGHT = 600
