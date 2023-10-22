@@ -59,6 +59,8 @@ Cluster = pygame.image.load("MapMaterials\Exam Room Cluster.png")
 PathWBranch = pygame.image.load("MapMaterials\PathWithBranch.png")
 triage = pygame.image.load("MapMaterials\Triage Area.png")
 BossRoom = pygame.image.load("MapMaterials\BossRoom.png")
+helpScreen = pygame.image.load("Assets\Help Screen\helpscreen.png")
+virus = pygame.image.load("Assets\Viruses\\1.png")
 
 while running:
     ev = pygame.event.poll()
@@ -127,7 +129,12 @@ while running:
 
         screen.fill("green")
         pygame.draw.rect(screen, orangish, backButton)
-
+        screen.blit(helpScreen, (30, -10))
+        screen.blit(player.image, (130, 80))
+        screen.blit(virus, (500, 500))
+        screen.blit(virus, (450, 500))
+        screen.blit(virus, (460, 420))
+        screen.blit(virus, (350, 450))
         screen.blit(fontRenders['backFont'], (backButton[0] + 10, backButton[1]))
 
     elif gameState == "gaming":
