@@ -284,9 +284,12 @@ while running:
                     gameState = 'pause'
                     pauseState = "Boss"
 
+        if bossVirus.health <= 0:
+            bossVirus.rect.x = 4000
+
         if bossVirus.health <= 0 and player.rect.x <= 0:
             gameState = "Path"
-            player.rect.x, player.rect.y = (400,500)
+            player.rect.x, player.rect.y = (WIDTH - 50, HEIGHT / 2)
 
         if pygame.Rect.colliderect(player.rect, bossVirus.rect):
             gameState = "end"
@@ -295,9 +298,8 @@ while running:
         print(bossVirus.health)
         if bossVirus.health > 0:
             bossVirus.draw(screen, player)
-
+            
         player.draw(screen, viruses)
-        screen.blit(BossRoom, (0,0))
         scoreFont = backFont.render(f"SCORE: {player.score}", 1, "#ffc800")
         screen.blit(scoreFont, (5, 5))
         
