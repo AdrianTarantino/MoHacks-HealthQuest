@@ -1,5 +1,7 @@
 # MoHacks-HealthQuest
 Welcome to Healthcare Hustle.
+Programmed by: [AdrianTheHacker](https://github.com/AdrianTheHacker), [johnwarp](https://github.com/johnwarp), [RomD0g](https://github.com/RomD0g).
+
 Healthcare Hustle is a single player, top-down, shoot-em-up style game. The objective is to kill the boss and get the highest score possible.
 The objective of this game is to teach someone the layout of the hospital in an intuitive and fun way. We do this by making the player's map a 1-to-1 replica of the hospital's map.
 
