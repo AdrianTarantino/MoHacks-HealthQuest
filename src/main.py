@@ -240,6 +240,7 @@ while running:
         if player.rect.x >= 750:
             gameState = "Boss"
             player.rect.x, player.rect.y = (50,300)
+            bossVirus.rect.x, bossVirus.rect.y = (400,300)
 
         if player.rect.colliderect(0, 0, 800, 150):
             player.rect.y += player.velocity
@@ -290,7 +291,7 @@ while running:
 
         if bossVirus.health <= 0 and player.rect.x <= 0:
             gameState = "Path"
-            player.score += 100
+            player.score += 150
             player.rect.x, player.rect.y = (WIDTH - 50, HEIGHT / 2)
 
         if pygame.Rect.colliderect(player.rect, bossVirus.rect):
